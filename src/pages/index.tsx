@@ -11,7 +11,7 @@ import Pagination from "@/components/shared/pagination";
 import { API_KEY, INITIAL_KEYWORD, ITEMS_PER_PAGE } from "@/libs/constant";
 
 const Home = () => {
-   const [keyword, setKeyword] = useState<string>("");
+   const [keyword, setKeyword] = useState<string>("Typescript");
    const [debouncedKeyword] = useDebounce(keyword, 1000);
    const [page, setPage] = useState<number>(0);
    const [books, setBooks] = useState<Book[] | undefined>([]);
