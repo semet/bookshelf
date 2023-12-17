@@ -1,4 +1,5 @@
 declare module "component-types" {
+   import { DateValueType } from "react-tailwindcss-datepicker";
    export type LayoutProps = {
       children?: React.ReactNode;
    };
@@ -52,5 +53,16 @@ declare module "component-types" {
       isFetching: boolean;
       isLoading: boolean;
       isPlaceholderData: boolean;
+   };
+
+   export type YearFilterProps = {
+      data: Book[];
+      value: DateValueType;
+      onChange: Dispatch<SetStateAction<{ startDate: Date; endDate: number }>>;
+   };
+
+   export type SortingProps = {
+      onClick: () => void;
+      sortType?: "ASC" | "DESC";
    };
 }
