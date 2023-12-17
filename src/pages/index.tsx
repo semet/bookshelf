@@ -44,8 +44,8 @@ const Home = () => {
       });
 
    const filterByYear = () => {
-      if (data?.items && filterDate?.startDate !== null) {
-         const filteredData = data.items.filter((book) => {
+      if (data && filterDate?.startDate !== null) {
+         const filteredData = data?.items.filter((book) => {
             const bookPublishedDate = new Date(
                book.volumeInfo.publishedDate
             ).getFullYear();
@@ -61,7 +61,7 @@ const Home = () => {
    const handleTitleSort = () => {
       setTitleSortingType((prevOrder) => (prevOrder === "ASC" ? "DESC" : "ASC"));
 
-      data?.items.sort((a, b) => {
+      books?.sort((a, b) => {
          const titleA = a.volumeInfo.title.toLowerCase();
          const titleB = b.volumeInfo.title.toLowerCase();
 
@@ -74,7 +74,7 @@ const Home = () => {
    const handleYearSort = () => {
       setYearSortingType((prevOrder) => (prevOrder === "ASC" ? "DESC" : "ASC"));
 
-      data?.items.sort((a, b) => {
+      books?.sort((a, b) => {
          const dateA: Date = new Date(a.volumeInfo.publishedDate);
          const dateB: Date = new Date(b.volumeInfo.publishedDate);
 
