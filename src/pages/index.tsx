@@ -3,18 +3,31 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import SearchForm from "@/components/home/search-form";
-import { Book } from "component-types";
+import { Book, SortingProps } from "component-types";
 import BookCard from "@/components/shared/book-card";
 import BookList from "@/components/shared/book-list";
 import { useDebounce } from "use-debounce";
 import Pagination from "@/components/shared/pagination";
 import { API_KEY, INITIAL_KEYWORD, ITEMS_PER_PAGE } from "@/libs/constant";
+import Toolbars from "@/components/home/toolbars";
+import YearFilter from "@/components/home/year-filter";
+import { DateValueType } from "react-tailwindcss-datepicker";
+import SortByYear from "@/components/home/sort-by-year";
+import SortByTitle from "@/components/home/sort-by-title";
 
 const Home = () => {
    const [keyword, setKeyword] = useState<string>("Typescript");
    const [debouncedKeyword] = useDebounce(keyword, 1000);
    const [page, setPage] = useState<number>(0);
    const [books, setBooks] = useState<Book[] | undefined>([]);
+   const [filterDate, setFilterDate] = useState<DateValueType>({
+      startDate: null,
+      endDate: null,
+   });
+   const [titleSortingType, setTitleSortingType] =
+      useState<SortingProps["sortType"]>("ASC");
+   const [yearSortingType, setYearSortingType] =
+      useState<SortingProps["sortType"]>("ASC");
 
    const fetchBooks = async (page: number = 0) => {
       const res = await axios.get<{ items: Book[] }>(
@@ -30,9 +43,54 @@ const Home = () => {
          enabled: !!keyword,
       });
 
+   const filterByYear = () => {
+      if (data?.items && filterDate?.startDate !== null) {
+         const filteredData = data.items.filter((book) => {
+            const bookPublishedDate = new Date(
+               book.volumeInfo.publishedDate
+            ).getFullYear();
+            return (
+               bookPublishedDate == new Date(filterDate!.startDate!).getFullYear()
+            );
+         });
+
+         setBooks(filteredData);
+      }
+   };
+
+   const handleTitleSort = () => {
+      setTitleSortingType((prevOrder) => (prevOrder === "ASC" ? "DESC" : "ASC"));
+
+      data?.items.sort((a, b) => {
+         const titleA = a.volumeInfo.title.toLowerCase();
+         const titleB = b.volumeInfo.title.toLowerCase();
+
+         const comparison = titleA.localeCompare(titleB);
+
+         return titleSortingType === "ASC" ? comparison : -comparison;
+      });
+   };
+
+   const handleYearSort = () => {
+      setYearSortingType((prevOrder) => (prevOrder === "ASC" ? "DESC" : "ASC"));
+
+      data?.items.sort((a, b) => {
+         const dateA: Date = new Date(a.volumeInfo.publishedDate);
+         const dateB: Date = new Date(b.volumeInfo.publishedDate);
+
+         return yearSortingType === "ASC"
+            ? dateA.getTime() - dateB.getTime()
+            : dateB.getTime() - dateA.getTime();
+      });
+   };
+
    useEffect(() => {
       setBooks(data?.items);
-   }, [data]);
+      if (filterDate?.startDate !== null) {
+         filterByYear();
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+   }, [data, filterDate, titleSortingType, yearSortingType]);
    return (
       <div className="text-2xl">
          {/* Hero Section */}
@@ -53,7 +111,29 @@ const Home = () => {
             ) : data.items.length === 0 ? (
                <p>No book</p>
             ) : (
-               <>
+               <div className="flex flex-col gap-4">
+                  {/* Toolbars */}
+                  {data.items ? (
+                     <Toolbars>
+                        {/* Date filter */}
+                        <YearFilter
+                           data={data.items}
+                           onChange={setFilterDate}
+                           value={filterDate}
+                        />
+                        {/* Sort By Title */}
+                        <SortByTitle
+                           onClick={handleTitleSort}
+                           sortType={titleSortingType}
+                        />
+                        {/* Srt By year */}
+                        <SortByYear
+                           onClick={handleYearSort}
+                           sortType={yearSortingType}
+                        />
+                     </Toolbars>
+                  ) : null}
+
                   <BookList books={books} />
 
                   <div className="my-4">
@@ -67,7 +147,7 @@ const Home = () => {
                         onPageChange={setPage}
                      />
                   </div>
-               </>
+               </div>
             )}
          </div>
       </div>
