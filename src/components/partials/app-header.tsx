@@ -2,6 +2,7 @@ import React from "react";
 import FavoriteSection from "./favorite-section";
 import FutureReading from "./future-reading";
 import useScroll from "@/libs/use-scroll";
+import Link from "next/link";
 
 const Header = () => {
    const { isScrolled } = useScroll();
@@ -12,13 +13,17 @@ const Header = () => {
          }`}
       >
          {/* Left */}
-         <h1
-            className={`font-semibold tracking-wide  text-xl sm:text-3xl transition-all ease-in-out duration-500 ${
-               isScrolled ? "text-gray-700 md:text-4xl" : "text-gray-50 md:text-5xl"
-            }`}
-         >
-            Bookshelf
-         </h1>
+         <Link href={"/"}>
+            <h1
+               className={`font-semibold tracking-wide  text-xl sm:text-3xl transition-all ease-in-out duration-500 ${
+                  isScrolled
+                     ? "text-gray-700 md:text-4xl"
+                     : "text-gray-50 md:text-5xl"
+               }`}
+            >
+               Bookshelf
+            </h1>
+         </Link>
          {/* Right */}
          <div className="flex gap-4 items-center">
             {/* Favorite */}
