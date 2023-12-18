@@ -3,6 +3,7 @@ import { Chip } from "@material-tailwind/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Book } from "component-types";
+import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -22,13 +23,17 @@ const Book = () => {
    });
    return (
       <div className="py-6 main-padding">
+         <Head>
+            <title>{data ? data.volumeInfo.title : "Book details"}</title>
+         </Head>
          {/* Image */}
          {data ? (
             <>
-               <div className="flex gap-2">
-                  <div className="rounded-md overflow-hidden shadow-md">
+               <div className="flex flex-col md:flex-row gap-2">
+                  <div className="rounded-md overflow-hidden shadow-md w-auto md:w-[50%]">
                      <Image
                         src={data.volumeInfo.imageLinks.thumbnail}
+                        className="w-full h-full object-cover"
                         width={400}
                         height={400}
                         alt={data?.volumeInfo.title}
@@ -38,13 +43,13 @@ const Book = () => {
                      <h3 className="text-3xl font-semibold text-gray-700">
                         {data.volumeInfo.title}
                      </h3>
-                     <div className="flex gap-4 items-center">
+                     <div className="flex gap-4 items-center text-xs sm:text-sm">
                         {data.volumeInfo.authors ? (
-                           <p className="text-sm text-indigo-700">
+                           <p className="text-indigo-700">
                               By: {data.volumeInfo.authors[0]}
                            </p>
                         ) : null}
-                        <span className="text-sm text-gray-700">
+                        <span className="text-gray-700">
                            Published on:{" "}
                            {data.volumeInfo.publishedDate.toLocaleString()}
                         </span>
@@ -57,13 +62,14 @@ const Book = () => {
                         </li>
                         <li className="flex gap-2 text-gray-700">
                            <span> Categories: </span>
-                           <div className="flex gap-2">
+                           <div className="flex flex-col sm:flex-row gap-2">
                               {data.volumeInfo.categories[0]
                                  .split("/")
                                  .map((cat, i) => (
                                     <Chip
                                        size="sm"
                                        variant="outlined"
+                                       className="text-xs"
                                        value={cat}
                                        key={i}
                                     />
