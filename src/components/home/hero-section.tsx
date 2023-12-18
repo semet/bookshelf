@@ -8,7 +8,7 @@ const HeroSection: React.FC<{ children: React.ReactNode }> = ({ children }) => {
          {/* Search Form */}
          {children}
          {/* Image */}
-         <div className="w-[50%]">
+         <div className="w-[30%] hidden md:flex">
             <Image
                src={"/images/hero.png"}
                alt="Bookshelf"

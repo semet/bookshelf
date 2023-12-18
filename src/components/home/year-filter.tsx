@@ -8,7 +8,7 @@ const YearFilter: React.FC<YearFilterProps> = ({ data, onChange, value }) => {
       .filter((date) => !isNaN(date.getTime()))
       .sort((a, b) => a.getTime() - b.getTime());
    return (
-      <div>
+      <div className="w-full sm:w-auto">
          <Datepicker
             startFrom={publishedDates[0]}
             useRange={false}

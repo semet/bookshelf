@@ -3,8 +3,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import SearchForm from "@/components/home/search-form";
-import { Book, SortingProps } from "component-types";
-import BookCard from "@/components/shared/book-card";
+import { Book, SortingProps, ViewType } from "component-types";
+import BookCard from "@/components/shared/book-card-grid";
 import BookList from "@/components/shared/book-list";
 import { useDebounce } from "use-debounce";
 import Pagination from "@/components/shared/pagination";
@@ -14,6 +14,10 @@ import YearFilter from "@/components/home/year-filter";
 import { DateValueType } from "react-tailwindcss-datepicker";
 import SortByYear from "@/components/home/sort-by-year";
 import SortByTitle from "@/components/home/sort-by-title";
+import Head from "next/head";
+import ListVieButton from "@/components/home/list-view-button";
+import GridViewButton from "@/components/home/grid-view-button";
+import BookGrid from "@/components/shared/book-grid";
 
 const Home = () => {
    const [keyword, setKeyword] = useState<string>("Typescript");
@@ -28,6 +32,8 @@ const Home = () => {
       useState<SortingProps["sortType"]>("ASC");
    const [yearSortingType, setYearSortingType] =
       useState<SortingProps["sortType"]>("ASC");
+
+   const [viewType, setViewType] = useState<ViewType>("GRID");
 
    const fetchBooks = async (page: number = 0) => {
       const res = await axios.get<{ items: Book[] }>(
@@ -93,6 +99,9 @@ const Home = () => {
    }, [data, filterDate, titleSortingType, yearSortingType]);
    return (
       <div className="text-2xl">
+         <Head>
+            <title>Bookshelf</title>
+         </Head>
          {/* Hero Section */}
          <HeroSection>
             <SearchForm
@@ -131,10 +140,25 @@ const Home = () => {
                            onClick={handleYearSort}
                            sortType={yearSortingType}
                         />
+                        <div className="flex gap-4">
+                           {/* Grid View */}
+                           <GridViewButton
+                              viewType={viewType}
+                              onClick={() => setViewType("GRID")}
+                           />
+                           {/* List view */}
+                           <ListVieButton
+                              viewType={viewType}
+                              onClick={() => setViewType("LIST")}
+                           />
+                        </div>
                      </Toolbars>
                   ) : null}
-
-                  <BookList books={books} />
+                  {viewType === "GRID" ? (
+                     <BookGrid books={books} />
+                  ) : (
+                     <BookList books={books} />
+                  )}
 
                   <div className="my-4">
                      {/* Pagination */}

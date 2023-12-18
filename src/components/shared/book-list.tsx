@@ -1,14 +1,14 @@
 import { Book } from "component-types";
 import React from "react";
-import BookCard from "./book-card";
+import BookCardList from "./book-card-list";
 
 const BookList: React.FC<{ books: Book[] | undefined }> = ({ books }) => {
    return (
-      <div className="grid grid-cols-4 gap-4">
+      <div className="flex flex-col gap-4">
          {books ? (
             <>
                {books.map((book) => (
-                  <BookCard {...book} key={book.id} />
+                  <BookCardList {...book} key={book.id} />
                ))}
             </>
          ) : null}

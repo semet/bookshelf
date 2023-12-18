@@ -4,14 +4,14 @@ import { Spinner } from "@material-tailwind/react";
 
 const SearchForm: React.FC<SearchFormProps> = ({ onChange, value, isLoading }) => {
    return (
-      <div className="w-[50%] flex flex-col gap-4">
-         <h2 className="text-5xl font-bold bg-gradient-to-r from-blue-900 to-pink-900 bg-clip-text text-transparent">
+      <div className="w-full md:w-[70%] text-center md:text-left flex flex-col gap-4">
+         <h2 className="text-7xl md:text-5xl font-bold bg-gradient-to-r from-blue-900 to-pink-900 bg-clip-text text-transparent">
             Just leave it here
          </h2>
-         <h3 className="text-base text-gray-100">
+         <h3 className="text-xl md:text-base text-gray-100">
             Check out new books without spending a penny
          </h3>
-         <div className="relative bg-red-800 rounded-md overflow-hidden w-[70%] h-[60px] ">
+         <div className="relative bg-red-800 rounded-md overflow-hidden w-full md:w-[70%] h-[60px] ">
             <input
                type="text"
                placeholder="Type any book title"

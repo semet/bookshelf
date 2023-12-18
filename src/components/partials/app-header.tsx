@@ -7,14 +7,14 @@ const Header = () => {
    const { isScrolled } = useScroll();
    return (
       <header
-         className={`flex justify-between py-5 main-padding sticky top-0 z-50 transition-all ease-in-out duration-500 ${
+         className={`flex justify-between items-center py-5 main-padding sticky top-0 z-50 transition-all ease-in-out duration-500 ${
             isScrolled ? "bg-white shadow-md h-[90px]" : "bg-indigo-200 h-[120px]"
          }`}
       >
          {/* Left */}
          <h1
-            className={`font-semibold tracking-wide transition-all ease-in-out duration-500 ${
-               isScrolled ? "text-gray-700 text-4xl " : "text-gray-50 text-5xl "
+            className={`font-semibold tracking-wide  text-xl sm:text-3xl transition-all ease-in-out duration-500 ${
+               isScrolled ? "text-gray-700 md:text-4xl" : "text-gray-50 md:text-5xl"
             }`}
          >
             Bookshelf
@@ -23,7 +23,7 @@ const Header = () => {
          <div className="flex gap-4 items-center">
             {/* Favorite */}
             <FavoriteSection />
-            <FutureReading />
+            {/* <FutureReading /> */}
          </div>
       </header>
    );

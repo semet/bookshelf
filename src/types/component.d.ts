@@ -65,4 +65,6 @@ declare module "component-types" {
       onClick: () => void;
       sortType?: "ASC" | "DESC";
    };
+
+   export type ViewType = "GRID" | "LIST";
 }

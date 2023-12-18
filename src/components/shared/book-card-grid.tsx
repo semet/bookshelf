@@ -1,10 +1,18 @@
+import useFavorite from "@/libs/use-favorite";
 import { Book } from "component-types";
 import Image from "next/image";
+import Link from "next/link";
 import { title } from "process";
 import React from "react";
+import { useCookies } from "react-cookie";
 import { FaBookmark, FaHeart, FaRegBookmark } from "react-icons/fa";
 
-const BookCard: React.FC<Book> = ({ id, saleInfo, volumeInfo }) => {
+const BookCardGrid: React.FC<Book> = ({ id, saleInfo, volumeInfo }) => {
+   const { saveToFavorite } = useFavorite({
+      id,
+      saleInfo,
+      volumeInfo,
+   });
    return (
       <div className="flex flex-col w-full bg-white rounded-md overflow-hidden shadow-md relative group">
          <Image
@@ -19,7 +27,12 @@ const BookCard: React.FC<Book> = ({ id, saleInfo, volumeInfo }) => {
             height={50}
          />
          <div className="flex flex-col gap-4 p-4">
-            <p className="text-md text-gray-800">{volumeInfo.title}</p>
+            <Link
+               href={`/book/${id}`}
+               className="text-3xl sm:text-2xl xl:text-xl text-gray-800"
+            >
+               {volumeInfo.title}
+            </Link>
             {volumeInfo.authors ? (
                <p className="text-sm text-indigo-700">By: {volumeInfo.authors[0]}</p>
             ) : null}
@@ -29,16 +42,16 @@ const BookCard: React.FC<Book> = ({ id, saleInfo, volumeInfo }) => {
                </p>
             ) : null}
          </div>
-         <div className="absolute -top-20 group-hover:top-2 right-2 flex flex-col gap-4 bg-black/70 p-2 rounded-sm transition-all ease-in-out duration-300">
-            <button className="text-pink-400 hover:text-pink-700">
+         <div className="absolute -left-20 top-[50%] group-hover:left-[50%] flex flex-col gap-4 bg-black/95 p-2 rounded-full transition-all ease-in-out duration-300">
+            <button
+               className="text-pink-400 hover:text-pink-700"
+               onClick={saveToFavorite}
+            >
                <FaHeart />
-            </button>
-            <button className="text-indigo-400 hover:text-indigo-800">
-               <FaBookmark />
             </button>
          </div>
       </div>
    );
 };
 
-export default BookCard;
+export default BookCardGrid;
